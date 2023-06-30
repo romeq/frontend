@@ -9,3 +9,5 @@ Created using [ant.design](https://ant.design) and Next.js
 - [ ] Profile page
 - [ ] Browse pastes
 - [ ] Show a single paste
+- [ ] Settings
+- [ ] Themes

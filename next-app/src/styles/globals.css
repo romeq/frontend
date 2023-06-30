@@ -14,3 +14,18 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.center {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.maxwidth {
+  
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+
+}

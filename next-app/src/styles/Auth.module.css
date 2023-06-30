@@ -1,0 +1,10 @@
+.header {
+    max-width: 500px;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.ant-form {
+    width: 100% !important;
+    max-width: 500px !important;
+}

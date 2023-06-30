@@ -1,0 +1,20 @@
+.bar {
+    display: flex;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px 5px ;
+
+    justify-content: center;
+    align-items: center;
+}
+.bar .logo {
+    margin-right: auto;
+}
+.bar .menu-items {
+    display: flex;
+    gap: 30px;
+    
+    justify-content: center;
+    align-items: center;
+}

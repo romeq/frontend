@@ -2,13 +2,15 @@ import { Form, Input, Button, Checkbox, Space, message } from "antd"
 import styles from "../styles/Auth.module.css"
 import { defaultWrapper } from "../lib/wrapper/pastebin"
 import { useEffect, useState } from "react"
+import Link from "next/link"
 
 interface RegistrationState {
     success: boolean
 }
 
-function Register(props: { toggleMode: () => void }) {
+function Register() {
     const [registrationResult, setRegistrationResult] = useState<RegistrationState>()
+    const [messageApi, contextHolder] = message.useMessage()
 
     async function onRegister(values: any) {
         const result = await defaultWrapper.register({
@@ -33,61 +35,66 @@ function Register(props: { toggleMode: () => void }) {
 
     useEffect(() => {
         if (registrationResult?.success) {
-            window.location.replace("/")
+            window.location.assign("/")
         }
     }, [registrationResult])
 
     return (
-        <div className="maxwidth">
-            <div className={styles.header}>
-                <h2>Register to pastebin.fi</h2>
-                <p>Create a new account and get access to exclusive features</p>
+        <>
+            {contextHolder}
+            <div className="maxwidth">
+                <div className={styles.header}>
+                    <h2>Register to pastebin.fi</h2>
+                    <p>Create a new account and get access to exclusive features</p>
+                </div>
+                <Form onFinish={onRegister} layout="vertical" initialValues={{ remember: true }}>
+                    <Form.Item
+                        label="Username"
+                        name="username"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Username is invalid",
+                                pattern: /^[a-z]{1}[a-z_0-9-]{0,18}[a-z]{1}$/,
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Email address"
+                        name="email"
+                        rules={[{ type: "email", required: true, message: "Email is required" }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[{ required: true, message: "Password is required", min: 8 }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+
+                    <Form.Item name="remember" valuePropName="checked">
+                        <Checkbox>Remember me</Checkbox>
+                    </Form.Item>
+
+                    <Space wrap>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button>
+                                <Link href="/auth/login">I already have an account</Link>
+                            </Button>
+                        </Form.Item>
+                    </Space>
+                </Form>
             </div>
-            <Form onFinish={onRegister} layout="vertical" initialValues={{ remember: true }}>
-                <Form.Item
-                    label="Username"
-                    name="username"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Username is invalid",
-                            pattern: /^[a-z]{1}[a-z_0-9-]{0,18}[a-z]{1}$/,
-                        },
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    label="Email address"
-                    name="email"
-                    rules={[{ type: "email", required: true, message: "Email is required" }]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    label="Password"
-                    name="password"
-                    rules={[{ required: true, message: "Password is required", min: 8 }]}
-                >
-                    <Input.Password />
-                </Form.Item>
-
-                <Form.Item name="remember" valuePropName="checked">
-                    <Checkbox>Remember me</Checkbox>
-                </Form.Item>
-
-                <Space wrap>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
-                    </Form.Item>
-                    <Form.Item>
-                        <Button onClick={props.toggleMode}>I already have an account</Button>
-                    </Form.Item>
-                </Space>
-            </Form>
-        </div>
+        </>
     )
 }
 
@@ -95,7 +102,7 @@ interface LoginState {
     success: boolean
 }
 
-function Login(props: { toggleMode: () => void }) {
+function Login() {
     const [loginResult, setLoginResult] = useState<LoginState>()
     const [messageApi, contextHolder] = message.useMessage()
 
@@ -161,7 +168,9 @@ function Login(props: { toggleMode: () => void }) {
                             </Button>
                         </Form.Item>
                         <Form.Item>
-                            <Button onClick={props.toggleMode}>I don't have an account</Button>
+                            <Button>
+                                <Link href="/auth/register">I don't have an account</Link>
+                            </Button>
                         </Form.Item>
                     </Space>
                 </Form>
@@ -170,27 +179,4 @@ function Login(props: { toggleMode: () => void }) {
     )
 }
 
-export default function AuthPage() {
-    const [useLogin, setUseLogin] = useState(false)
-
-    useEffect(() => {
-        async function fetchProfile() {
-            const profile = await defaultWrapper.getProfile()
-            if (!profile) return
-
-            window.location.replace("/")
-        }
-
-        fetchProfile()
-    }, [])
-
-    return (
-        <>
-            {useLogin ? (
-                <Login toggleMode={() => setUseLogin((prev) => !prev)} />
-            ) : (
-                <Register toggleMode={() => setUseLogin((prev) => !prev)} />
-            )}
-        </>
-    )
-}
+export { Login, Register }

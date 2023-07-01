@@ -18,3 +18,13 @@
     justify-content: center;
     align-items: center;
 }
+.loginLink {
+    padding: 7px 15px;
+    background-color: hsl(0, 0%, 93%);
+    color: black;
+    border-radius: 8px;
+    transition: 100ms ease;
+}
+.loginLink:hover {
+    background-color: hsl(0, 0%, 88%);
+}

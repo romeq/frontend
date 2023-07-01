@@ -15,7 +15,7 @@ const profileItems: MenuProps["items"] = [
     {
         key: "2",
         label: (
-            <Link rel="noopener noreferrer" href="/profile">
+            <Link rel="noopener noreferrer" href="/browse/owned">
                 My pastes
             </Link>
         ),
@@ -55,7 +55,9 @@ export default function MenuBar({ profile }: { profile?: User | undefined }) {
                         </Avatar>
                     </Dropdown>
                 ) : (
-                    <Link href="/auth">Login</Link>
+                    <Link className={styles.loginLink} href="/auth">
+                        Login
+                    </Link>
                 )}
             </div>
         </div>

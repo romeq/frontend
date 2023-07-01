@@ -34,7 +34,17 @@ class Pastebin {
     }
 
     async register(props: { username: string; email: string; password: string }): Promise<boolean> {
-        return false
+        try {
+            const req = await fetch(`${this.apiInstance}/users/create`, {
+                method: "post",
+                body: JSON.stringify(props),
+                credentials: "include",
+                headers: new Headers({ "content-type": "application/json" }),
+            })
+            return req.ok
+        } catch (e) {
+            return false
+        }
     }
 
     async logout() {
@@ -55,7 +65,7 @@ class Pastebin {
         }
     }
 
-    async createPaste(props: { title: string; paste: string; private: boolean }): Promise<PasteCreated | undefined> {
+    async createPaste(props: { title: string; paste: string; private: boolean }): Promise<PasteCreated | string> {
         try {
             const req = await fetch(`${this.apiInstance}/pastes`, {
                 method: "post",

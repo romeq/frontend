@@ -51,7 +51,26 @@ class Pastebin {
         await fetch(`${this.apiInstance}/users/logout`, { credentials: "include" })
     }
 
-    async login(props: { username: string; password: string }): Promise<boolean> {
+    async verifyAccount(username: string, activationkey: string): Promise<boolean> {
+        try {
+            const req = await fetch(`${this.apiInstance}/users/activate`, {
+                method: "post",
+                body: JSON.stringify({
+                    username,
+                    activationkey,
+                }),
+                credentials: "include",
+                headers: new Headers({ "content-type": "application/json" }),
+            })
+
+            console.log(req.status)
+            return req.status == 200
+        } catch (e) {
+            return false
+        }
+    }
+
+    async login(props: { username: string; password: string }): Promise<[boolean, string | undefined]> {
         try {
             const req = await fetch(`${this.apiInstance}/users/login`, {
                 method: "post",
@@ -59,13 +78,15 @@ class Pastebin {
                 credentials: "include",
                 headers: new Headers({ "content-type": "application/json" }),
             })
-            return req.ok
+            const json = await req.json()
+            console.log(json)
+            return [req.ok, Object.keys(json).includes("errcode") ? json["errcode"] : ""]
         } catch (e) {
-            return false
+            return [false, ""]
         }
     }
 
-    async createPaste(props: { title: string; paste: string; private: boolean }): Promise<PasteCreated | string> {
+    async createPaste(props: { title: string; paste: string; private: boolean }): Promise<PasteCreated> {
         try {
             const req = await fetch(`${this.apiInstance}/pastes`, {
                 method: "post",

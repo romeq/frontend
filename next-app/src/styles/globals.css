@@ -16,6 +16,11 @@ a {
 }
 
 .center {
+  padding-top: 80px;
+  z-index: -100;
+  top: 0px;
+  width: 100%;
+  position: absolute;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

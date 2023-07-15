@@ -102,35 +102,38 @@ export default function BrowsePage() {
     const toggleSortType = (e: RadioChangeEvent) => setToggleSortTypeValue(e.target.value)
     const toggleSortDirection = (e: RadioChangeEvent) => setToggleSortDirection(e.target.value)
     return (
-        <div className="maxwidth center">
-            <Form layout="vertical" style={{ width: "100%", marginTop: 50, marginBottom: 50 }}>
-                <Form.Item>
-                    <Input.Search placeholder="Matti Nykänen's diary" />
-                </Form.Item>
-
-                <Space align="baseline">
-                    <Form.Item label="Sort method">
-                        <Radio.Group onChange={toggleSortType} value={sortTypeValue}>
-                            <Space direction="vertical">
-                                <Radio value={1}>Date</Radio>
-                                <Radio value={2}>Viewcount</Radio>
-                                <Radio value={3}>Paste size</Radio>
-                            </Space>
-                        </Radio.Group>
+        <div className="center">
+            <div className="maxwidth">
+                <Form layout="vertical" style={{ width: "100%", marginTop: 50, marginBottom: 50 }}>
+                    <Form.Item>
+                        <Input.Search placeholder="Matti Nykänen's diary" />
                     </Form.Item>
-                    <Form.Item label="Sort direction">
-                        <Radio.Group onChange={toggleSortDirection} value={sortDirection}>
-                            <Space direction="vertical">
-                                <Radio value={1}>Decreasing</Radio>
-                                <Radio value={2}>Increasing</Radio>
-                            </Space>
-                        </Radio.Group>
-                    </Form.Item>
-                </Space>
-            </Form>
-            <Items items={items} />
 
-            <Pagination style={{ marginBottom: 50 }} defaultCurrent={1} total={50} />
+                    <Space align="baseline">
+                        <Form.Item label="Sort method">
+                            <Radio.Group onChange={toggleSortType} value={sortTypeValue}>
+                                <Space direction="vertical">
+                                    <Radio value={1}>Date</Radio>
+                                    <Radio value={2}>Viewcount</Radio>
+                                    <Radio value={3}>Paste size</Radio>
+                                </Space>
+                            </Radio.Group>
+                        </Form.Item>
+                        <Form.Item label="Sort direction">
+                            <Radio.Group onChange={toggleSortDirection} value={sortDirection}>
+                                <Space direction="vertical">
+                                    <Radio value={1}>Decreasing</Radio>
+                                    <Radio value={2}>Increasing</Radio>
+                                </Space>
+                            </Radio.Group>
+                        </Form.Item>
+                    </Space>
+                </Form>
+                <Items items={items} />
+
+                <Pagination style={{ marginBottom: 50 }} defaultCurrent={1} total={50} />
+            </div>
         </div>
+        
     )
 }

@@ -43,6 +43,8 @@ class Pastebin {
     }
 
     async checkApi(): Promise<Status | undefined> {
+        if (!window.navigator.onLine)
+            return undefined
         try {    
             const controller = new AbortController()
             const timeoutId = setTimeout(() => controller.abort(), 3000)

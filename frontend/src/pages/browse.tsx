@@ -1,4 +1,4 @@
-import { Collapse, Descriptions, Dropdown, Form, Input, Pagination, Radio, RadioChangeEvent, Space } from "antd"
+import { Button, Collapse, Descriptions, Dropdown, Form, Input, Pagination, Radio, RadioChangeEvent, Space } from "antd"
 import { useState } from "react"
 
 interface PasteMetadata {
@@ -26,6 +26,9 @@ function Item({ item }: { item: PasteMetadata }) {
                 </Descriptions.Item>
                 <Descriptions.Item label="Views">{item.views}</Descriptions.Item>
                 <Descriptions.Item label="Size (bytes)">{item.size}</Descriptions.Item>
+                {/* <Button type="primary" href={"/p/" + item.id}>
+                    Href Primary
+                </Button> */}
             </Descriptions>
         </>
     )

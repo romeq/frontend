@@ -68,7 +68,7 @@ function ViewPaste() {
                     <Divider type="vertical" />
                     <Tooltip title={moment(paste.date).format('LLLL')}>{moment(paste.date).fromNow()}</Tooltip>
                     <Divider type="vertical" />
-                    <p><UserOutlined /> {paste.author}</p>
+                    <a href={"/u/" + paste.author}><UserOutlined /> {paste.author}</a>
                     <Divider type="vertical" />
                     <a href={"/r/"+paste.id}>Raw</a>
                     <Divider type="vertical" />

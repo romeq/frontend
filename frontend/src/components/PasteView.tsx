@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/router'
-import { Button, Card, message, Skeleton, Space } from "antd"
-import { DownloadOutlined } from '@ant-design/icons';
+import { Avatar, Button, Card, message, Skeleton, Space, Divider, Tooltip } from "antd"
+import { DownloadOutlined, UserOutlined } from '@ant-design/icons';
 import { defaultWrapper, Paste } from "../lib/wrapper/pastebin"
+import moment from 'moment'
 // TODO: use syntax highlight small build
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
@@ -42,6 +43,16 @@ function ViewPaste() {
         setContentLoaded(true)
     }
 
+    function download(filename, text) {
+        const element = document.createElement("a")
+        element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text))
+        element.setAttribute("download", filename)
+        element.style.display = "none"
+        document.body.appendChild(element)
+        element.click()
+        document.body.removeChild(element)
+    }
+
     useEffect(()=>{
         if(!router.isReady) return
 
@@ -52,8 +63,16 @@ function ViewPaste() {
         <div className="maxwidth center">
             <Card title={paste.title} extra={
                 <Space wrap>
-                    <a href="#">Raw</a>
-                    <Button type="primary" icon={<DownloadOutlined />} shape="round" size="small">
+                    {/* Add emoji/icon */}
+                    <Tooltip title={paste.hidden ? "Paste is accesible only with a direct link" : "Paste is visible on our search" }>{paste.hidden ? "Hidden" : "Public"}</Tooltip>
+                    <Divider type="vertical" />
+                    <Tooltip title={moment(paste.date).format('LLLL')}>{moment(paste.date).fromNow()}</Tooltip>
+                    <Divider type="vertical" />
+                    <p><UserOutlined /> {paste.author}</p>
+                    <Divider type="vertical" />
+                    <a href={"/r/"+paste.id}>Raw</a>
+                    <Divider type="vertical" />
+                    <Button onClick={() => download(`${paste.title}.${paste.lang}`, paste.content)} type="primary" icon={<DownloadOutlined />} shape="round" size="small">
                         Download ({ paste.content ? formatBytes(paste.content.length) : "empty"})
                     </Button>
                 </Space>

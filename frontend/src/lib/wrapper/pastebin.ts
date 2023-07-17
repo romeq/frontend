@@ -24,6 +24,7 @@ interface Paste {
     hidden: boolean
     date: Date
     lang: string
+    author: string
     meta: {
         views: number
         size: number

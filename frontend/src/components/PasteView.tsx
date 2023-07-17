@@ -70,7 +70,9 @@ function ViewPaste() {
                     <Divider type="vertical" />
                     <a href={"/u/" + paste.author}><UserOutlined /> {paste.author}</a>
                     <Divider type="vertical" />
-                    <a href={"/r/"+paste.id}>Raw</a>
+                    <Button type="primary" href={"/r/"+paste.id} shape="round" size="small">
+                        Raw
+                    </Button>
                     <Divider type="vertical" />
                     <Button onClick={() => download(`${paste.title}.${paste.lang}`, paste.content)} type="primary" icon={<DownloadOutlined />} shape="round" size="small">
                         Download ({ paste.content ? formatBytes(paste.content.length) : "empty"})

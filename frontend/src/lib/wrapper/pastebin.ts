@@ -35,6 +35,14 @@ interface Status {
     status: "up"
 }
 
+interface Metrics {
+    pasteCount: {
+        total: number
+        public: number
+        private: number
+    }
+}
+
 class Pastebin {
     apiInstance: string
 
@@ -49,6 +57,16 @@ class Pastebin {
             const controller = new AbortController()
             const timeoutId = setTimeout(() => controller.abort(), 3000)
             const req = await fetch(`${this.apiInstance}/`, { signal: controller.signal })
+            if (!req.ok) return undefined
+            return await req.json()
+        } catch (e) {
+            return undefined
+        }
+    }
+
+    async getMetrics(): Promise<Metrics | undefined> {
+        try {    
+            const req = await fetch(`${this.apiInstance}/metrics`)
             if (!req.ok) return undefined
             return await req.json()
         } catch (e) {
@@ -148,5 +166,5 @@ class Pastebin {
 }
 
 const defaultWrapper = new Pastebin()
-export type { Paste, User, Status, WrapperError }
+export type { Paste, User, Status, Metrics, WrapperError }
 export { Pastebin, defaultWrapper }

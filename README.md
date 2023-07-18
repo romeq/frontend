@@ -11,4 +11,13 @@ Created using [ant.design](https://ant.design) and Next.js
 - [ ] Browse pastes
 - [ ] Show a single paste
 - [ ] Settings
+- [ ] Multi language (!!!)
 - [ ] Themes
+
+## Development
+
+```
+cd frontend/
+npm install
+npm run dev
+```

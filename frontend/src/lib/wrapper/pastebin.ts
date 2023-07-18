@@ -6,6 +6,7 @@ interface User {
         bio: string
     }
 }
+
 interface WrapperError {
     message: string
 }
@@ -16,11 +17,61 @@ interface PasteCreated {
     language?: string
 }
 
+interface Paste {
+    title: string
+    content: string
+    id: string
+    hidden: boolean
+    date: Date
+    lang: string
+    author: string
+    meta: {
+        views: number
+        size: number
+    }
+}
+
+interface Status {
+    status: "up"
+}
+
+interface Metrics {
+    pasteCount: {
+        total: number
+        public: number
+        private: number
+    }
+}
+
 class Pastebin {
     apiInstance: string
 
     constructor() {
-        this.apiInstance = "http://localhost:8080"
+        this.apiInstance = "https://api.pastebin.fi"
+    }
+
+    async checkApi(): Promise<Status | undefined> {
+        if (!window.navigator.onLine)
+            return undefined
+        try {    
+            const controller = new AbortController()
+            const timeoutId = setTimeout(() => controller.abort(), 3000)
+            const req = await fetch(`${this.apiInstance}/`, { signal: controller.signal })
+            if (!req.ok) return undefined
+            return await req.json()
+        } catch (e) {
+            return undefined
+        }
+    }
+
+    async getMetrics(): Promise<Metrics | undefined> {
+        try {    
+            const req = await fetch(`${this.apiInstance}/metrics`)
+            if (!req.ok) return undefined
+            return await req.json()
+        } catch (e) {
+            return undefined
+        }
     }
 
     async getProfile(): Promise<User | undefined> {
@@ -86,7 +137,7 @@ class Pastebin {
         }
     }
 
-    async createPaste(props: { title: string; paste: string; private: boolean }): Promise<PasteCreated> {
+    async createPaste(props: { title: string; paste: string; private: boolean }): Promise<PasteCreated | undefined> {
         try {
             const req = await fetch(`${this.apiInstance}/pastes`, {
                 method: "post",
@@ -102,8 +153,18 @@ class Pastebin {
             return undefined
         }
     }
+
+    async getPaste(props: { id: string }): Promise<Paste | undefined> {
+        try {
+            const req = await fetch(`${this.apiInstance}/pastes/${props.id}`, { credentials: "include" })
+            if (!req.ok) return undefined
+            return await req.json()
+        } catch (e) {
+            return undefined
+        }
+    }
 }
 
 const defaultWrapper = new Pastebin()
-export type { User, WrapperError }
+export type { Paste, User, Status, Metrics, WrapperError }
 export { Pastebin, defaultWrapper }
